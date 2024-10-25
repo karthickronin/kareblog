@@ -13,7 +13,7 @@ export default function Contact() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/api/enquiry", {
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/enquiry", {
       method: "POST",
       body: JSON.stringify(input),
     })

@@ -2,11 +2,11 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function post({params}) {
+export default function Post({params}) {
   const id = params.id;
   const [post, setPost] = useState(null);
   useEffect(() => {
-    fetch("http://localhost:3000/api/posts/" + id)
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts/" + id)
       .then((res) => res.json())
       .then((res) => setPost(res));
   }, []);

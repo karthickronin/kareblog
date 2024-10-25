@@ -9,8 +9,7 @@ export default function Home() {
   const inputRef = useRef("");
 
   useEffect(() => {
-    // fetch(process.env.API_URL+"/posts")/
-    fetch("http://localhost:3000/api/posts")
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts")
       .then((res) => res.json())
       .then((res) => setPosts(res));
   }, []);
@@ -20,14 +19,14 @@ export default function Home() {
       return;
     }
     setSearch(true);
-    fetch("http://localhost:3000/api/posts?q=" + inputRef.current.value)
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts?q=" + inputRef.current.value)
       .then((res) => res.json())
       .then((res) => setPosts(res))
       .finally(() => setSearch(false));
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/api/posts/${id}`, { 
+    fetch(process.env.NEXT_PUBLIC_API_URL+`/posts/${id}`, { 
       method: "DELETE",
       headers:{
       "Accept": "application/json"}
@@ -89,14 +88,14 @@ export default function Home() {
       <p>{message}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:justify-center lg:grid-cols-3">
         {posts.map((post) => (
-          <>
-            <div className="border m-2 border-stone-300 p-2">
+            <div key={post.id} className="border m-2 border-stone-300 p-2">
               <Link href={"/post/" + post._id}>
                 <img
                   src={post.image}
                   className="p-3 w-full object-cover"
                   alt={post.title}
                 />
+                
                 <h2 className="p-3 flex justify-center font-bold text-3xl">
                   {post.title}
                 </h2>
@@ -107,7 +106,6 @@ export default function Home() {
               </Link>
               <button onClick={() => {handleDelete(post._id)}} className="mx-3 my-1 px-2 py-1 bg-red-500 rounded text-white hover:bg-red-600">Delete</button>
             </div>
-          </>
         ))}
         {!posts.length > 0 && inputRef.current.value && (
           <p className="flex justify-center items-center text-red-600">

@@ -13,7 +13,7 @@ export default function AddPost() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/api/posts", {
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts", {
       method: "POST",
       body: JSON.stringify(input),
     })

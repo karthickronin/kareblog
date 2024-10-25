@@ -2,7 +2,7 @@ import Post from "../../../components/Post";
 
 export async function generateMetadata({ params }) {
   const id = params.id;
-  const post = await fetch("http://localhost:3000/api" + "/posts/" + id)
+  const post = await fetch("process.env.NEXT_PUBLIC_API_URL" + "/posts/" + id)
   .then(
     (res) => res.json()
   );

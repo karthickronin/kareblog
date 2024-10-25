@@ -5,8 +5,14 @@ import { Schema, model, models } from "mongoose";
 dotenv.config();
 
 const connectMongo = async () => {
-    await mongoose.connect("mongodb://localhost:27017/next_blog")
-}
+    await mongoose
+    .connect(process.env.MONGO_URL, {
+      serverApi: {
+        version: '1',  // Stable API version
+        strict: true,
+        deprecationErrors: true,
+      }
+})}
 
 const postSchema = new Schema({
   title: {

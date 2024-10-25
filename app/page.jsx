@@ -9,7 +9,7 @@ export default function Home() {
   const inputRef = useRef("");
 
   useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts")
+    fetch(process.env.NEXT_PUBLIC_API_URL + "/posts")
       .then((res) => res.json())
       .then((res) => setPosts(res));
   }, []);
@@ -19,42 +19,44 @@ export default function Home() {
       return;
     }
     setSearch(true);
-    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts?q=" + inputRef.current.value)
+    fetch(
+      process.env.NEXT_PUBLIC_API_URL + "/posts?q=" + inputRef.current.value
+    )
       .then((res) => res.json())
       .then((res) => setPosts(res))
       .finally(() => setSearch(false));
   };
 
   const handleDelete = (id) => {
-    fetch(process.env.NEXT_PUBLIC_API_URL+`/posts/${id}`, { 
+    fetch(process.env.NEXT_PUBLIC_API_URL + `/posts/${id}`, {
       method: "DELETE",
-      headers:{
-      "Accept": "application/json"}
+      headers: {
+        Accept: "application/json",
+      },
     })
-    .then((response) => {
-      if (response.status === 200) { // No Content, deletion was successful
-        const updatedPosts = posts.filter((post) => post._id !== id); // Filter out the deleted post
-        setPosts(updatedPosts); // Update the posts state
-        setMessage("Post deleted successfully!");
-        
-        setTimeout(() => {
-          setMessage("");
-        }, 2000);
-      } else if (response.status === 404) {
-        setMessage("Post not found!");
-      } else {
-        return response.json().then((data) => {
-          setMessage(`Error: ${data.message}`);
-        });
-      }
-    })
-    .catch((error) => {
-      console.error('Error deleting post:', error);
-      setMessage(`Error: ${error.message}`);
-    });
+      .then((response) => {
+        if (response.status === 200) {
+          // No Content, deletion was successful
+          const updatedPosts = posts.filter((post) => post._id !== id); // Filter out the deleted post
+          setPosts(updatedPosts); // Update the posts state
+          setMessage("Post deleted successfully!");
+
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
+        } else if (response.status === 404) {
+          setMessage("Post not found!");
+        } else {
+          return response.json().then((data) => {
+            setMessage(`Error: ${data.message}`);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting post:", error);
+        setMessage(`Error: ${error.message}`);
+      });
   };
-  
-  
 
   return (
     <div className="mb-20">
@@ -83,29 +85,35 @@ export default function Home() {
         >
           {search ? "Loading" : "Search"}
         </button>
-        
       </div>
       <p>{message}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:justify-center lg:grid-cols-3">
         {posts.map((post) => (
-            <div key={post.id} className="border m-2 border-stone-300 p-2">
-              <Link href={"/post/" + post._id}>
-                <img
-                  src={post.image}
-                  className="p-3 w-full object-cover"
-                  alt={post.title}
-                />
-                
-                <h2 className="p-3 flex justify-center font-bold text-3xl">
-                  {post.title}
-                </h2>
-                <p className="px-3 flex justify-center">
-                  {post.short_description}
-                </p>
-                <div></div>
-              </Link>
-              <button onClick={() => {handleDelete(post._id)}} className="mx-3 my-1 px-2 py-1 bg-red-500 rounded text-white hover:bg-red-600">Delete</button>
-            </div>
+          <div key={post.id} className="border m-2 border-stone-300 p-2">
+            <Link href={"/post/" + post._id}>
+              <img
+                src={post.image}
+                className="p-3 w-full object-cover"
+                alt={post.title}
+              />
+
+              <h2 className="p-3 flex justify-center font-bold text-3xl">
+                {post.title}
+              </h2>
+              <p className="px-3 flex justify-center">
+                {post.short_description}
+              </p>
+              <div></div>
+            </Link>
+            <button
+              onClick={() => {
+                handleDelete(post._id);
+              }}
+              className="mx-3 my-1 px-2 py-1 bg-red-500 rounded text-white hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
         ))}
         {!posts.length > 0 && inputRef.current.value && (
           <p className="flex justify-center items-center text-red-600">

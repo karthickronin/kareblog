@@ -1,4 +1,4 @@
-import { connectMongo, enquiryModel } from "../../../../utils/connectMongo";
+import { connectMongo, enquiryModel } from "../../../utils/connectMongo";
 
 export async function POST(req) {
   try {

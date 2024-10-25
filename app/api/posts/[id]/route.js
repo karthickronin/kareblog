@@ -1,4 +1,4 @@
-import {connectMongo,postModel} from "../../../../../utils/connectMongo";
+import {connectMongo,postModel} from "../../../../utils/connectMongo";
 
 // Named export for the GET method
 export async function GET(req, {params}) {
